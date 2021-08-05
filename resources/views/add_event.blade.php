@@ -25,14 +25,17 @@
                         <div class="form-group">
                             <label for="title">Event Title *</label>
                             <input type="text" class="form-control" name="title" value="{{ (!empty($eventData)?$eventData->varTitle:'') }}" id="title" autocomplete="off" placeholder="Enter event title">
+                            <span class="error">{{ $errors->first('title') }}</span>
                         </div>
                         <div class="form-group mt-2">
                             <label for="startDate">Start Date*</label>
                             <input type="text" class="form-control" id="startDate" value="{{ (!empty($eventData)?date('d-m-Y',strtotime($eventData->dtStartDate)):'') }}" name="startDate" placeholder="Start Date" autocomplete="off">
+                            <span class="error">{{ $errors->first('startDate') }}</span>
                         </div>
                         <div class="form-group mt-2">
                             <label for="endDate">End Date*</label>
                             <input type="text" class="form-control" id="endDate"  name="endDate" value="{{ (!empty($eventData)?date('d-m-Y',strtotime($eventData->dtEndDate)):'') }}" placeholder="End Date" autocomplete="off">
+                            <span class="error">{{ $errors->first('endDate') }}</span>
                         </div>
                         <div class="form-group mt-2">
                             <label >Recurrence*</label>
@@ -117,6 +120,7 @@
                                     </select>
                             </div> -->
                         </div>
+                        <span class="error">{{ $errors->first('recurrence') }}</span>
                         <div class="form-group ">
                             <button type="submit" class="btn btn-primary mt-2">Submit</button>
                         </div>    
@@ -158,7 +162,7 @@
                 },
                 // Specify validation error messages
                 messages: {
-                    title: "Please enter event title",
+                    title: "Event title is required",
                     startDate: "Please select start date",
                     endDate: {
                         required: "Please select end date"

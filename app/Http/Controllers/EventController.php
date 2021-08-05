@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\EventDates;
+use Validator;
 
 
 
@@ -57,9 +58,26 @@ class EventController extends Controller
     public function handlePost(Request $request) 
     {
         $postData = $request->all();
-        
+              
         if(!empty($postData)) {
 
+            $rules = array();
+            $rules['title'] = 'required';
+            $rules['startDate'] = 'required';
+            $rules['endDate'] = 'required';
+            $rules['recurrence'] = 'required';
+
+            $messages = array();
+            $messages['title.required'] = 'Title is required';
+            $messages['startDate.required'] = 'Please select start date';
+            $messages['endDate.required'] = 'Please select end date';
+            $messages['recurrence.required'] = 'Please select recurrence';
+
+            $validator = Validator::make($postData,$rules,$messages);
+            if($validator->fails()){
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            
             $event = new Event;
             $event->varTitle = $postData['title'];
             $event->dtStartDate = date('Y-m-d',strtotime($postData['startDate']));
@@ -149,6 +167,7 @@ class EventController extends Controller
                 }
                 return redirect()->route('event-list');
             }
+
         }else{
             return redirect()->route('add-event');
         }
